@@ -1,0 +1,31 @@
+x-gpu-config:
+  &gpu-config
+  runtime: nvidia
+  environment:
+    - DISPLAY=${DISPLAY:?err}
+    - NVIDIA_VISIBLE_DEVICES=all
+    - NVIDIA_DRIVER_CAPABILITIES=all
+    - USER
+
+x-cpu-config:
+  &cpu-config
+  environment:
+    - DISPLAY=${DISPLAY:?err}
+    - LIBGL_ALWAYS_SOFTWARE=1
+    - USER
+
+services:
+  rosbot_xl:
+    image: rosbot-xl-dev 
+    <<: [*gpu-config]
+    network_mode: host
+    ipc: host
+    user: root
+    entrypoint: /bin/bash     # 👈 disables the sim-launching ENTRYPOINT
+    stdin_open: true
+    tty: true
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./src:/ros2_ws/src:rw
+      - ./scripts:/ros2_ws/scripts
+    #command: sleep 9000
