@@ -16,7 +16,7 @@ x-cpu-config:
 
 services:
   rosbot_xl:
-    image: rosbot-xl-dev 
+    image: rosbot-xl-dev:1.2 
     <<: [*gpu-config]
     network_mode: host
     ipc: host
